@@ -91,10 +91,18 @@ main {
 .weather-forecast {
   display: flex;
   justify-content: space-around;
+  padding-top: 50px;
 }
 
 .weather-forecast-day {
   text-align: center;
+  color: rgba(39, 33, 66, 0.4);
+}
+
+.weather-forecast-temp {
+  color: red;
+  display: flex;
+  justify-content: space-evenly;
 }
 
 footer {
