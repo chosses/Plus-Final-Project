@@ -24,26 +24,44 @@ function displayTemperature(response) {
   let cityElement = document.querySelector("#current-city");
   cityElement.innerHTML = response.data.city;
   temperatureElement.innerHTML = temperature;
+
+  getForecast(response.data.city);
 }
 
-function showForecast() {
-  let forecast = document.querySelector("#weather-forecast");
+function formatDay(timestamp) {
+  let day = new Date(timestamp * 1000);
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  return days[day.getDay()];
+}
 
-  let days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+function getForecast(city) {
+  let apiKey = "a53197b4c084be4oe4f4e3t0f5e087ce";
+  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=metric`;
+  axios(apiUrl).then(showForecast);
+}
+
+function showForecast(response) {
+  let forecast = document.querySelector("#weather-forecast");
+  console.log(response.data);
+
   let forecastHtml = "";
-  days.forEach(function (day) {
-    forecastHtml =
-      forecastHtml +
-      `<div class="weather-forecast-day">
-            ${day}
+  response.data.daily.forEach(function (day, index) {
+    if (index < 5) {
+      forecastHtml =
+        forecastHtml +
+        `<div class="weather-forecast-day">
+            ${formatDay(day.time)}
             <img
-              src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/broken-clouds-day.png"
+              src="${day.condition.icon_url}"
               alt="weather-icon"
               class="weather-forecast-icon"
             />
-            <div class="weather-forecast-temp"><strong>15°</strong> 4°</div>
+            <div class="weather-forecast-temp"><strong>${Math.round(
+              day.temperature.minimum
+            )}</strong> ${Math.round(day.temperature.maximum)}</div>
           </div> 
           `;
+    }
   });
   forecast.innerHTML = forecastHtml;
 }
@@ -97,4 +115,5 @@ let currentDateELement = document.querySelector("#current-date");
 let currentDate = new Date();
 
 currentDateELement.innerHTML = formatDate(currentDate);
-showForecast();
+
+getForecast("Berlin");
