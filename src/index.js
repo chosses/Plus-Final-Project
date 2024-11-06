@@ -26,6 +26,28 @@ function displayTemperature(response) {
   temperatureElement.innerHTML = temperature;
 }
 
+function showForecast() {
+  let forecast = document.querySelector("#weather-forecast");
+
+  let days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+  let forecastHtml = "";
+  days.forEach(function (day) {
+    forecastHtml =
+      forecastHtml +
+      `<div class="weather-forecast-day">
+            ${day}
+            <img
+              src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/broken-clouds-day.png"
+              alt="weather-icon"
+              class="weather-forecast-icon"
+            />
+            <div class="weather-forecast-temp"><strong>15°</strong> 4°</div>
+          </div> 
+          `;
+  });
+  forecast.innerHTML = forecastHtml;
+}
+
 function search(event) {
   event.preventDefault();
   let searchInputElement = document.querySelector("#search-input");
@@ -75,3 +97,4 @@ let currentDateELement = document.querySelector("#current-date");
 let currentDate = new Date();
 
 currentDateELement.innerHTML = formatDate(currentDate);
+showForecast();
